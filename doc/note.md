@@ -1,0 +1,1 @@
+npx create-react-app react-typescript-electron --template typescript
