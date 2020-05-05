@@ -1,14 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
-import SelectFile from './SelectFile'
+import MyTabs from './Tabs'
 ReactDOM.render(
-  <React.StrictMode>
-    <SelectFile />
-    <App/>
-  </React.StrictMode>,
+  <React.Fragment>
+    <MyTabs></MyTabs>
+  </React.Fragment>,
   document.getElementById('root')
 );
 
