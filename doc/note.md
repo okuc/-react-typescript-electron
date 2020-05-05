@@ -15,3 +15,5 @@
 
 # 引入antd
  - `npm install antd --save`
+ - `npm install react-app-rewired customize-cra`，对reate-react-app 的默认配置进行自定义
+ - `npm install babel-plugin-import`，babel-plugin-import 是一个用于按需加载组件代码和样式的 babel 插件
