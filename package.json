@@ -13,6 +13,8 @@
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.7",
     "antd": "^4.2.0",
+    "babel-plugin-import": "^1.13.0",
+    "customize-cra": "^0.9.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
@@ -30,7 +32,8 @@
   },
   "build": {
     "appId": "com.okuc.test",
-    "productName": "react-typescript-electron",
+    "productName": "word比较查重工具",
+    "copyright":"sdhetian",
     "extends": null,
     "directories": {
       "output": "build-electron"
@@ -41,8 +44,16 @@
       "./package.json"
     ],
     "win": {
-      "icon": "src/asset/icon.ico"
-    }
+      "icon": "build/ico.ico",
+      "target": [
+        {
+          "target": "zip"
+        }
+      ]
+    },  
+    "electronDownload":{
+      "mirror":"https://npm.taobao.org/mirrors/electron/"
+  }
   },
   "eslintConfig": {
     "extends": "react-app"

@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require("electron");
+const { app, BrowserWindow, Menu } = require("electron");
 const path = require("path");
 
 const url = require("url");
@@ -6,6 +6,7 @@ const url = require("url");
 let mainWindow = null;
 //判断命令行脚本的第二参数是否含--debug
 const debug = /--debug/.test(process.argv[2]);
+
 function makeSingleInstance() {
   if (process.mas) return;
   app.requestSingleInstanceLock();
@@ -16,17 +17,18 @@ function makeSingleInstance() {
     }
   });
 }
+
 function createWindow() {
   const windowOptions = {
     width: 800,
     height: 600,
-    frame: false,
+    frame: true,
     webPreferences: {
       nodeIntegration: true,
       //preload: path.join(__dirname, "preload.js"),
     },
   };
-    // 创建浏览器窗口
+  // 创建浏览器窗口
   /**
    * width:窗口宽度
    * height:窗口高度
@@ -36,18 +38,22 @@ function createWindow() {
    * maxiHeight：最大高度
    * x：指定窗口的横坐标
    * y:指定窗口的纵坐标
-   * 
+   *
    * 获取窗口尺寸
    * getSize() 返回数组，[0]width,[1]height
    * 设置窗口尺寸
    * setSize(wight,height,flag) flag:true,以动画效果改变尺寸（仅限于Mac OS X）
-   * 
+   *
    * 获取窗口位置
    * getPosition() 返回数组，[0]:x,[1]:y
    * 设置窗口位置
    * setSize(x),y,flag) flag:true,以动画效果改变位置（仅限于Mac OS X）
    */
   mainWindow = new BrowserWindow(windowOptions);
+
+  //不显示默 认菜单
+  Menu.setApplicationMenu(null);
+
   // mainWindow.loadURL("http://localhost:3000/");
   // mainWindow.loadURL(path.join('file://', __dirname, '/build/index.html'));
   /**
@@ -60,7 +66,7 @@ function createWindow() {
       ? "http://localhost:3000"
       : path.join(__dirname, "/build/index.html");
   mainWindow.loadURL(startUrl);
-  
+
   // 并且为你的应用加载index.html
   //win.loadFile('index.html')
 
@@ -80,7 +86,8 @@ function createWindow() {
     mainWindow.maximize();
   });
   //如果是--debug 打开开发者工具，窗口最大化，
-  if (debug) { // 打开开发者工具
+  if (debug) {
+    // 打开开发者工具
     mainWindow.webContents.openDevTools();
     require("devtron").install();
   }
@@ -98,7 +105,8 @@ app.on("ready", () => {
 app.on("window-all-closed", () => {
   // 在 macOS 上，除非用户用 Cmd + Q 确定地退出，
   // 否则绝大部分应用及其菜单栏会保持激活。
-  if (process.platform !== "darwin") {//苹果平台不需要退出
+  if (process.platform !== "darwin") {
+    //苹果平台不需要退出
     app.quit();
   }
 });
@@ -108,11 +116,11 @@ app.on("activate", () => {
   // if (mainWindow === null) {
   //   createWindow();
   // }
-  
+
   // 在macOS上，当单击dock图标并且没有其他窗口打开时，
   // 通常在应用程序中重新创建一个窗口。
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow()
+    createWindow();
   }
 });
 //也可以拆分成几个文件，然后用 require 导入。

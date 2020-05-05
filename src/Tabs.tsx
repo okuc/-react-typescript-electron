@@ -12,14 +12,11 @@ function callback(key:any) {
 function MyTabs() {
 return (
   <Tabs defaultActiveKey="1" onChange={callback}>
-    <TabPane tab="SelectFile" key="1">
+    <TabPane tab="word比较查重器" key="1">
       <SelectFile></SelectFile>
     </TabPane>
-    <TabPane tab="Tab 2" key="2">
+    <TabPane tab="关于" key="2">
       <App/>
-    </TabPane>
-    <TabPane tab="Tab 3" key="3">
-      Content of Tab Pane 3
     </TabPane>
   </Tabs>
 );
