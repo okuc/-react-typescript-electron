@@ -4,6 +4,8 @@
 - `cnpm i electron --save-dev`、`cnpm i devtron --save-dev`：安装electron及开发工具依赖
 - `npm i -D react-app-rewired cross-env`:react-app-rewired用于扩展 webpack 配置，cross-env运行跨平台设置和使用环境变量的脚本
 - `npm i -D electron-builder`添加打包工具
+- `npm install react-app-rewire-multiple-entry --save-dev`支持多页面
+
 # 打包过程： 
     1. 打包 react
         - `npm run build`

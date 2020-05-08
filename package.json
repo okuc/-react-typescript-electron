@@ -66,6 +66,7 @@
     "devtron": "^1.4.0",
     "electron": "^8.2.5",
     "electron-builder": "^22.6.0",
+    "react-app-rewire-multiple-entry": "^2.2.0",
     "react-app-rewired": "^2.1.6"
   }
 }
