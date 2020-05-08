@@ -2,9 +2,9 @@
 import React from 'react';
 
 import { Tabs } from 'antd';
-import SelectFile from './SelectFile';
-import App from './App';
-import Window  from './MyWindow'
+import SelectFile from './compments/SelectFile';
+import App from './compments/App';
+import Window  from './compments/MyWindow'
 
 
 const { TabPane } = Tabs;
