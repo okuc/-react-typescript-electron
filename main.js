@@ -20,11 +20,16 @@ function createWindow() {
   const windowOptions = {
     width: 800,
     height: 600,
-    frame: false,
+    icon: './public/icon.ico',
+    frame: true,//是否有标题、菜单
+    title:"好好学习，天天向上",
+    //fullscreen:true,//是否全屏
+    //transparent:true,//透明窗口
     webPreferences: {
       nodeIntegration: true,
       //preload: path.join(__dirname, "preload.js"),
     },
+    show:false,//默认不显示
   };
     // 创建浏览器窗口
   /**
@@ -55,12 +60,18 @@ function createWindow() {
    *  1.开发环境，指向 react 的开发环境地址
    *  2.生产环境，指向 react build 后的 index.html
    */
+  //加载页面
   const startUrl =
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
       : path.join(__dirname, "/build/index.html");
   mainWindow.loadURL(startUrl);
   
+  //内容加载完毕，显示窗口
+  mainWindow.on("ready-to-show",()=>{
+    mainWindow.show();
+    })
+
   // 并且为你的应用加载index.html
   //win.loadFile('index.html')
 
