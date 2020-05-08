@@ -8,7 +8,7 @@ const addWebpackTarget = target => config => {
 
 const multipleEntry = require('react-app-rewire-multiple-entry')([{
     entry: 'src/childWindow/index.tsx',
-    template: 'public/index.html',
+    template: 'public/child.html',
     outPath: '/child.html',
 }]);
 
