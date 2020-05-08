@@ -5,6 +5,7 @@
 - `npm i -D react-app-rewired cross-env`:react-app-rewired用于扩展 webpack 配置，cross-env运行跨平台设置和使用环境变量的脚本
 - `npm i -D electron-builder`添加打包工具
 - `npm install react-app-rewire-multiple-entry --save-dev`支持多页面
+- `npm install --save @types/react-document-title react-document-title`动态设置页面的title
 
 # 打包过程： 
     1. 打包 react
