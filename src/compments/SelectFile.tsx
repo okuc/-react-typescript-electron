@@ -1,7 +1,7 @@
 import React from "react";
 import { remote } from "electron";
 import fs from "fs";
-
+import path from 'path';
 interface Props {}
 
 interface State {
@@ -119,6 +119,25 @@ export default class SelectFile extends React.Component<Props, State> {
     
     this.setState(() => ({ txtFileData: result.filePath===undefined?'':result.filePath }));
   };
+
+   /**
+   * 其他对话框
+   */
+  public otherDialog = async () => {
+    const img = remote.nativeImage.createFromPath(path.relative('.', path.join(path.resolve("public"),"icon.png")));
+    console.log(path.relative('.', path.join(__dirname, 'public', 'icon.png')));
+    console.log("================================打包后图像的问题暂未解决");
+    console.log(path.resolve("public"),"icon.png");
+    const result = await remote.dialog.showMessageBox({
+      title: "信息",
+      message:"这是信息内容，有多种类型的对话框，更改类型即可。",
+      type:"warning",//info、error、question、warning、none
+      //icon:img,//windows下原本有默认图标，更改后须将不同类型的图标改为不同的，否则将一样，不易区分
+      buttons:['button1','button1','button1','button1','button1']
+    });
+    
+    this.setState(() => ({ txtFileData: "选择的按钮是:"+result.response }));
+  };
   public render = (): JSX.Element => {
     return (
       <section>
@@ -127,6 +146,7 @@ export default class SelectFile extends React.Component<Props, State> {
         <button onClick={this.getSelDirectory}>选择一个目录</button>
         <button onClick={this.getSelMulDirectory}>选择多个目录及文件</button>
         <button onClick={this.saveFile}>保存对话框</button>
+        <button onClick={this.otherDialog}>其他对话框</button>
         <div
           dangerouslySetInnerHTML={{
             __html: this.state.directoryName.toString(),
