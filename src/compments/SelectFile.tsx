@@ -46,21 +46,16 @@ export default class SelectFile extends React.Component<Props, State> {
     });
   };
   /**
-   * 弹出文件选择框，选择 .txt 文件
-   * 将选中的 .txt 内容展示到页面
+   * 弹出文件选择框，选择目录
+   * 将选中的 文件夹中的文件列表展示到页面
    */
   public getSelDirectory = async () => {
     const result = await remote.dialog.showOpenDialog({
       title: "请选择 .txt 文件",
       defaultPath: "D:\\Personal\\Desktop",
       properties: ["openDirectory"],
+     // properties: ["openFile","multiSelections"],//多选，可以同时选择文件和目录
       //buttonLabel:"请选择",选择窗口按钮的名称
-      filters: [
-        {
-          name: "txt",
-          extensions: ["txt"],
-        },
-      ],
     });
 
     let allFiles1: Array<string> = [];
@@ -72,12 +67,37 @@ export default class SelectFile extends React.Component<Props, State> {
     this.setState(() => ({ directoryName: allFiles1 }));
   };
 
+  /**
+   * 弹出文件选择框，选择多个目录和文件
+   * 将选中的文件夹及文件列表展示到页面
+   */
+  public getSelMulDirectory = async () => {
+    const result = await remote.dialog.showOpenDialog({
+      title: "请选择目录及文件",
+      defaultPath: "D:\\Personal\\Desktop",
+      properties: ["openFile","multiSelections"],//多选，可以同时选择文件和目录
+      //buttonLabel:"请选择",选择窗口按钮的名称
+      filters: [
+        {
+          name: "txt",
+          extensions: ["txt"],
+        },
+        {
+          name: ".jpg",
+          extensions: ["jpg"],
+        },
+      ],
+    });
+
+    this.setState(() => ({ directoryName: result.filePaths }));
+  };
   public render = (): JSX.Element => {
     return (
       <section>
         <button onClick={this.readTxtFileData}>读取一个txt文件的内容</button>
         <div dangerouslySetInnerHTML={{ __html: this.state.txtFileData }} />
         <button onClick={this.getSelDirectory}>选择一个目录</button>
+        <button onClick={this.getSelMulDirectory}>选择多个目录及文件</button>
         <div
           dangerouslySetInnerHTML={{
             __html: this.state.directoryName.toString(),
