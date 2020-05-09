@@ -91,6 +91,34 @@ export default class SelectFile extends React.Component<Props, State> {
 
     this.setState(() => ({ directoryName: result.filePaths }));
   };
+
+    /**
+   * 保存对话框
+   */
+  public saveFile = async () => {
+    const result = await remote.dialog.showSaveDialog({
+      title: "保存文件",
+      defaultPath: "D:\\Personal\\Desktop",
+      nameFieldLabel:"保存位置",
+      //buttonLabel:"请选择",选择窗口按钮的名称
+      filters: [
+        {
+          name: "txt",
+          extensions: ["txt"],
+        },
+        {
+          name: ".csv",
+          extensions: ["csv"],
+        },
+        {
+          name: "*.*",
+          extensions: ["*"],
+        },
+      ],
+    });
+    
+    this.setState(() => ({ txtFileData: result.filePath===undefined?'':result.filePath }));
+  };
   public render = (): JSX.Element => {
     return (
       <section>
@@ -98,6 +126,7 @@ export default class SelectFile extends React.Component<Props, State> {
         <div dangerouslySetInnerHTML={{ __html: this.state.txtFileData }} />
         <button onClick={this.getSelDirectory}>选择一个目录</button>
         <button onClick={this.getSelMulDirectory}>选择多个目录及文件</button>
+        <button onClick={this.saveFile}>保存对话框</button>
         <div
           dangerouslySetInnerHTML={{
             __html: this.state.directoryName.toString(),
