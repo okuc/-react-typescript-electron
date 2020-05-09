@@ -90,6 +90,10 @@ function createWindow() {
   ipc.on("login", function () {
     mainWindow.maximize();
   });
+      //通过主进程中转的窗口间的数据
+  ipc.on('paradata', (event, arg) => {
+    mainWindow.webContents.send('paradata', arg);
+  })
   //如果是--debug 打开开发者工具，窗口最大化，
   if (debug) { // 打开开发者工具
     mainWindow.webContents.openDevTools();
