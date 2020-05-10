@@ -10,6 +10,10 @@ const multipleEntry = require('react-app-rewire-multiple-entry')([{
     entry: 'src/childWindow/index.tsx',
     template: 'public/child.html',
     outPath: '/child.html',
+},{
+  entry: 'src/childWindow2/index.tsx',
+  template: 'public/child.html',
+  outPath: '/child2.html',
 }]);
 
 const addEntry = () => config => {

@@ -1,10 +1,14 @@
-import React,{useState} from "react";
+import React,{useState, ChangeEvent} from "react";
 import logo from "./logo.svg";
 import "./App.css";
-
+import { Input, Select } from 'antd';
 import path from "path";
 import { ipcRenderer, remote } from "electron";
 function App() {
+
+  const [msg, setMsg] = useState<string|null>("");
+  const [childWin, setChildWin] = useState<Window|null>(null);//将子窗口引入放入状态中，防止刷新页面时丢失引用
+
   const closeWindow = () => {
     window.close();
   };
@@ -47,17 +51,26 @@ function App() {
     })
     win.show();
   };
-let childWin:Window | null ;
+
+  //////////////////////////////另外一种打开窗口的方式。
   const openWindow2 = () => {
     //加载页面
+    
+  let childWinTemp:Window | null ;
     const startUrl =
       process.env.NODE_ENV === "development"
-        ? "http://localhost:3000/child.html"
-        : path.join(__dirname, "/build/child.html");
-        childWin = window.open(startUrl,"title","width=300,height=200");//也可以直接是网址。
-   
+        ? "http://localhost:3000/child2.html"
+        : path.join(__dirname, "/build/child2.html");
+        childWinTemp = window.open(startUrl,"title","width=300,height=200");//也可以直接是网址。
+        if(childWin?.onload){//这里使用了类型保护机制，只有为Window类型时才执行，为null时不执行
+          const childWIn2:Window = childWin;
+          childWIn2.onload = function(e) {
+            childWIn2.postMessage(msg,"chrome-extension://"+window.location.host);
+      }}
+      
+  setChildWin(childWinTemp);
   };
-
+  //常用操作
   const getFocus = ()=>{
     if(childWin!=undefined){
       childWin.focus();
@@ -83,8 +96,18 @@ let childWin:Window | null ;
         childWin.print();
     }
   }
-  const [msg, setMsg] = useState("");
 
+  const changeMsg = (e: ChangeEvent<HTMLInputElement>) =>{
+   setMsg(e.target.value);
+  }
+  //向子窗口传递数据
+  const sendMsg = ()=>{
+    console.log({msg});
+    console.log({childWin});
+    if(childWin!=undefined){
+     childWin.postMessage({msg},"*");
+    }
+  }
   return (
     <div className="App">
       <button onClick={closeWindow}>关闭窗口</button>
@@ -95,6 +118,10 @@ let childWin:Window | null ;
       <button onClick={getBlur}>失去焦点</button>
       <button onClick={getClose}>关闭窗口</button>
       <button onClick={printWindow}>打印</button>
+      <button onClick={sendMsg}>win.open传参</button>
+      <div style={{ marginBottom: 16 }}>
+      <Input addonBefore="向子窗口传递的数据" addonAfter="后辍" defaultValue="这里是输入的数据" onChange={changeMsg} />
+    </div>
   <div>{msg}</div>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
