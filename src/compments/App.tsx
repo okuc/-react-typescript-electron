@@ -132,8 +132,8 @@ function App() {
     ];
 
     const menu = remote.Menu.buildFromTemplate(template);
-
-    remote.Menu.setApplicationMenu(menu);
+    win.setMenu(menu);//仅仅在此窗口有效，不影响其他窗口
+    //remote.Menu.setApplicationMenu(menu);//这种设置方式会使应用的所有窗口都改动
     //加载页面
     const startUrl =
       process.env.NODE_ENV === "development"
