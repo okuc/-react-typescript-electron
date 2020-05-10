@@ -18,6 +18,8 @@ class App extends React.Component<MyProps,MyState>{
   };
   messageBind = (e:MessageEvent)=>{
     console.log(e.data);   
+    console.log(e.source);//页面来源，也是发送消息时用到的第二个参数，本地为file://,网址中的页面为http://www.xx.com，发送消息是用*或不写，可发送到全部
+     
     this.setState({msg:e.data.msg});
   }
   componentDidMount() {
