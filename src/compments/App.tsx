@@ -34,7 +34,7 @@ function App() {
     });
 
     win.on("close", function () {});
-
+    console.log(path.relative('.', path.join(path.resolve("public"),"icon.png")));
     //设置窗口菜单https://www.electronjs.org/docs/api/menu-item#menuitemmenu
     const template: Electron.MenuItemConstructorOptions[] = [
       {
@@ -42,6 +42,7 @@ function App() {
         submenu: [
           {
             label: "关于",
+            icon:remote.nativeImage.createFromPath(path.relative('.', path.join(path.resolve("public"),"icon.png"))),
             click: () => {
               var aboutWin = new remote.BrowserWindow({
                 width: 300,
