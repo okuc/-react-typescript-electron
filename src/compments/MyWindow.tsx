@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Slider } from "antd";
-
+import ContextMenuArea from "react-electron-contextmenu";
 import { remote, BrowserWindow, MenuItem } from "electron";
 import { Row, Col } from "antd";
 interface WindowState {
@@ -18,6 +18,7 @@ const initialState: WindowState = {
 };
 
 const MyWindow = () => {
+  //动态菜单
   const addMenu = () => {
       const menu= new remote.Menu();
       var menuItemOpen:MenuItem = new remote.MenuItem({label:'打开'});
@@ -32,6 +33,23 @@ const MyWindow = () => {
       oldMenu?.append(menuItemNewMenu);
       remote.Menu.setApplicationMenu(oldMenu);
     };
+    //上下文菜单
+    const menuItems = [
+      {
+        label: "A menu item",
+        submenu: [
+          { label: "Submenu item", click: () => alert("I was clicked!") },
+          {
+            label: "Submenu item #2",
+            click: () => alert("I was also clicked!")
+          }
+        ]
+      },
+      {
+        label: "Another menu item",
+        click: () => alert("I was clicked!")
+      }
+    ];
     const getWindow = () => {
         setWindowState(win.getBounds());
       };
@@ -54,7 +72,7 @@ const MyWindow = () => {
   const win = remote.getCurrentWindow();
 
   return (
-    <div>
+    <div ><ContextMenuArea menuItems={menuItems}>
       <Row>
         <Col span={4} >
           {windowState.width}
@@ -92,6 +110,7 @@ const MyWindow = () => {
       <button onClick={setWindowFullScreen}>设置/恢复窗口全屏</button>
       <button onClick={setWindowKiosk}>设置窗口锁定模式</button>
       <button onClick={addMenu}>动态添加菜单</button>
+     </ContextMenuArea>
     </div>
   );
 };
