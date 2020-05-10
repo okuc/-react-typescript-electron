@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Slider } from "antd";
 
-import { remote, BrowserWindow } from "electron";
+import { remote, BrowserWindow, MenuItem } from "electron";
 import { Row, Col } from "antd";
 interface WindowState {
   width?: number;
@@ -18,6 +18,20 @@ const initialState: WindowState = {
 };
 
 const MyWindow = () => {
+  const addMenu = () => {
+      const menu= new remote.Menu();
+      var menuItemOpen:MenuItem = new remote.MenuItem({label:'打开'});
+      var menuItemSave:MenuItem = new remote.MenuItem({label:'保存',click:()=>{alert(123)}});
+      var menuItemNewMenu = new remote.MenuItem({label:'动态菜单',submenu:[]});
+      menuItemNewMenu.submenu?.append(menuItemOpen);
+      menuItemNewMenu.submenu?.append(menuItemSave);
+      menu.append(menuItemNewMenu);
+      menu.append(menuItemNewMenu);
+     // remote.Menu.setApplicationMenu(menu);//清空原来的菜单，只保留新加的菜单
+      const oldMenu:Electron.Menu|null = remote.Menu.getApplicationMenu();
+      oldMenu?.append(menuItemNewMenu);
+      remote.Menu.setApplicationMenu(oldMenu);
+    };
     const getWindow = () => {
         setWindowState(win.getBounds());
       };
@@ -77,6 +91,7 @@ const MyWindow = () => {
       <button onClick={setWindow}>设置窗口大小和位置</button>
       <button onClick={setWindowFullScreen}>设置/恢复窗口全屏</button>
       <button onClick={setWindowKiosk}>设置窗口锁定模式</button>
+      <button onClick={addMenu}>动态添加菜单</button>
     </div>
   );
 };
