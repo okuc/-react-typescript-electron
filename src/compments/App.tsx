@@ -6,7 +6,7 @@ import path from "path";
 import { ipcRenderer, remote } from "electron";
 function App() {
 
-  const [msg, setMsg] = useState<string|null>("");
+  const [msg, setMsg] = useState<string|null>("123");
   const [childWin, setChildWin] = useState<Window|null>(null);//将子窗口引入放入状态中，防止刷新页面时丢失引用
 
   const closeWindow = () => {
@@ -108,6 +108,11 @@ function App() {
      childWin.postMessage({msg},"*");
     }
   }
+  //接收子窗口传回的数据
+  remote.ipcMain.on('paradata2', (event, arg) => {
+    setMsg(arg.msg);
+  })
+  
   return (
     <div className="App">
       <button onClick={closeWindow}>关闭窗口</button>
