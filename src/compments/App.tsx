@@ -47,8 +47,42 @@ function App() {
     })
     win.show();
   };
+let childWin:Window | null ;
+  const openWindow2 = () => {
+    //加载页面
+    const startUrl =
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3000/child.html"
+        : path.join(__dirname, "/build/child.html");
+        childWin = window.open(startUrl,"title","width=300,height=200");//也可以直接是网址。
+   
+  };
 
+  const getFocus = ()=>{
+    if(childWin!=undefined){
+      childWin.focus();
+    }
+  }
 
+  const getBlur = ()=>{
+    if(childWin!=undefined){
+      childWin.blur ();
+    }
+  }  
+  const getClose = ()=>{
+    if(childWin!=undefined){
+      if(childWin.closed){
+        alert("窗口已关闭，无需再次关闭");
+        return;
+      }
+      childWin.close();
+    }
+  }
+  const printWindow = ()=>{
+    if(childWin!=undefined){
+        childWin.print();
+    }
+  }
   const [msg, setMsg] = useState("");
 
   return (
@@ -56,6 +90,11 @@ function App() {
       <button onClick={closeWindow}>关闭窗口</button>
       <button onClick={minWindow}>最小化窗口</button>
       <button onClick={openWindow}>打开子窗口</button>
+      <button onClick={openWindow2}>打开子窗口win.open</button>
+      <button onClick={getFocus}>获取焦点</button>
+      <button onClick={getBlur}>失去焦点</button>
+      <button onClick={getClose}>关闭窗口</button>
+      <button onClick={printWindow}>打印</button>
   <div>{msg}</div>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
