@@ -3,7 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import { Input, Select } from 'antd';
 import path from "path";
-import { ipcRenderer, remote } from "electron";
+import { ipcRenderer, remote, BrowserWindow } from "electron";
 function App() {
 
   const [msg, setMsg] = useState<string|null>("123");
@@ -39,6 +39,62 @@ function App() {
 
     });
 
+    //设置窗口菜单
+    const template : Electron.MenuItemConstructorOptions[] = [{
+      label:'文件',
+      submenu:[
+
+        { label:'关于', click:()=>{
+            var aboutWin = new remote.BrowserWindow({width:300,height:200,parent:win,modal:true});
+            aboutWin.loadURL("http://www.baidu.com");
+        } },
+        { type: 'separator' },
+        { label:'关闭',accelerator:'',
+          click:()=>win.close() },
+      ]
+    },{
+      label: 'Edit',
+      submenu: [
+          { role: 'undo' },
+          { role: 'redo' },
+          { type: 'separator' },
+          { role: 'cut' },
+          { role: 'copy' },
+          { role: 'paste' },
+          { role: 'pasteAndMatchStyle' },
+          { role: 'delete' },
+          { role: 'selectAll' }
+      ]
+  },
+  {
+      label: 'View',
+      submenu: [
+          { role: 'reload' },
+          { role: 'forceReload' },
+          { role: 'toggleDevTools' },
+          { type: 'separator' },
+          { role: 'resetZoom' },
+          { role: 'zoomIn' },
+          { role: 'zoomOut' },
+          { type: 'separator' },
+          { role: 'togglefullscreen' }
+      ]
+  },
+  { role: 'window', submenu: [{ role: 'minimize' }, { role: 'close' }] },
+  {
+      role: 'help',
+      submenu: [{
+          label: 'Learn More',
+          click() {
+              require('electron').shell.openExternal('https://electron.atom.io');
+          }
+      }]
+  }
+    ]
+
+    const menu = remote.Menu.buildFromTemplate(template);
+
+    remote.Menu.setApplicationMenu(menu);
     //加载页面
     const startUrl =
       process.env.NODE_ENV === "development"
