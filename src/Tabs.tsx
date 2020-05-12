@@ -7,6 +7,7 @@ import App from './compments/App';
 import Window  from './compments/MyWindow'
 import ZoomPage  from './compments/ZoomPage'
 import PreImg  from './compments/PreImg'
+import Camera  from './compments/Camera'
 
 
 const { TabPane } = Tabs;
@@ -31,6 +32,9 @@ return (
     </TabPane>
     <TabPane tab="图像相关" key="5">
       <PreImg></PreImg>
+    </TabPane>
+    <TabPane tab="摄像头" key="6">
+      <Camera></Camera>
     </TabPane>
   </Tabs>
 );
