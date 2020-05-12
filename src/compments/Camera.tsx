@@ -8,12 +8,18 @@ interface State {}
 class Camera extends React.Component<Props, State> {
   video_reference = React.createRef<HTMLVideoElement>();
   canvas_reference = React.createRef<HTMLCanvasElement>();
+  img_reference = React.createRef<HTMLImageElement>();
   async componentDidMount() {
     //此处代码为页面一加载就调用摄像头
     // if (this.video_reference.current) {
     //     let video_stream: MediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false })
     //     this.video_reference.current.srcObject = video_stream
     // }
+
+    if (this.img_reference.current) {
+      this.img_reference.current.src =
+        "http://attach.bbs.miui.com/forum/201306/23/110328s72xxse7lfis9fnd.jpg";
+    }
   }
 
   getCamera = () => {
@@ -30,15 +36,62 @@ class Camera extends React.Component<Props, State> {
     );
   };
   //截图
-  photo = () => {
+  photoFromCamera = () => {
     if (this.video_reference.current) {
-      
-      console.log(this.video_reference.current.videoWidth,this.video_reference.current.videoHeight);
+      console.log(
+        this.video_reference.current.videoWidth,
+        this.video_reference.current.videoHeight
+      );
       this.canvas_reference.current
         ?.getContext("2d")
-        ?.drawImage(this.video_reference.current,0,0,this.video_reference.current.videoWidth,this.video_reference.current.videoHeight);
+        ?.drawImage(
+          this.video_reference.current,
+          0,
+          0,
+          this.video_reference.current.videoWidth,
+          this.video_reference.current.videoHeight,
+          0,
+          0,
+          500 / 2,
+          400 / 2
+        );
     }
   };
+  //截图
+  photoFromImage = () => {
+    if (this.img_reference.current) {
+      console.log(
+        this.img_reference.current.offsetWidth,
+        this.img_reference.current.offsetHeight
+      );
+      console.log(
+        this.img_reference.current.naturalWidth,
+        this.img_reference.current.naturalHeight
+      );
+      console.log(
+        this.img_reference.current.scrollWidth,
+        this.img_reference.current.scrollHeight
+      );
+      console.log(
+        this.img_reference.current.clientWidth,
+        this.img_reference.current.clientHeight
+      );
+      this.canvas_reference.current
+        ?.getContext("2d")
+        ?.drawImage(
+          this.img_reference.current,
+          0,
+          0,
+          this.img_reference.current.naturalWidth,
+          this.img_reference.current.naturalHeight,
+          0,
+          0,
+          500 / 2,
+          400 / 2
+        );
+    }
+  };
+
   //保存图象
   savePhoto = () => {
     if (this.canvas_reference.current) {
@@ -68,8 +121,18 @@ class Camera extends React.Component<Props, State> {
       <>
         <div>调用本地摄像头</div>
         <button onClick={this.getCamera}>开始调用摄像头</button>
-        <button onClick={this.photo}>拍照</button>
+        <button onClick={this.photoFromCamera}>从视频拍照</button>
+        <button onClick={this.photoFromImage}>从图像拍照</button>
         <button onClick={this.savePhoto}>保存到本地</button>
+        <img
+          ref={this.img_reference}
+          style={{
+            margin: "0px",
+            padding: "0px",
+            width: "500px",
+            height: "400px",
+          }}
+        ></img>
         <video
           autoPlay
           ref={this.video_reference}
