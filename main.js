@@ -29,6 +29,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       //preload: path.join(__dirname, "preload.js"),
+      webSecurity: false,//关闭安全设置，方便上传显示本地图片
     },
     show: false, //默认不显示
   };

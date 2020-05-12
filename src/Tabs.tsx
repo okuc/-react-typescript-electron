@@ -6,6 +6,7 @@ import SelectFile from './compments/SelectFile';
 import App from './compments/App';
 import Window  from './compments/MyWindow'
 import ZoomPage  from './compments/ZoomPage'
+import PreImg  from './compments/PreImg'
 
 
 const { TabPane } = Tabs;
@@ -27,6 +28,9 @@ return (
     </TabPane>
     <TabPane tab="放大缩小页面" key="4">
       <ZoomPage></ZoomPage>
+    </TabPane>
+    <TabPane tab="图像相关" key="5">
+      <PreImg></PreImg>
     </TabPane>
   </Tabs>
 );
