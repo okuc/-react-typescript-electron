@@ -3,6 +3,8 @@ const path = require("path");
 
 const url = require("url");
 let mainWindow = null;
+//声明全局变量，可在渲染进程中通过remote.getGlobal('tray')进行访问。
+global.tray;
 //判断命令行脚本的第二参数是否含--debug
 const debug = /--debug/.test(process.argv[2]);
 function makeSingleInstance() {
@@ -68,8 +70,8 @@ function createWindow() {
 
   //内容加载完毕，显示窗口
   mainWindow.on("ready-to-show", () => {
-    //添加托盘图标
-    const tray = new Tray(path.join(__dirname, "/public/icon.ico"));
+    //添加托盘图标，一个应用可创建多个托盘图标，按下面的方法不停的添加即可,不要使用ico图标，ico图标会导致不弹出
+    tray = new Tray(path.join(__dirname, "/public/icon.png"));
 
     //为托盘图标添加上下文菜单
     const contextMenu = Menu.buildFromTemplate([
@@ -85,12 +87,15 @@ function createWindow() {
     ]);
     tray.setContextMenu(contextMenu);
     tray.setToolTip("这是一个托盘应用");
-    tray.on("click", () => {
-      //我们这里模拟桌面程序点击通知区图标实现打开关闭应用的功能
-      mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
-      mainWindow.isVisible()
-        ? mainWindow.setSkipTaskbar(false)
-        : mainWindow.setSkipTaskbar(true);
+    tray.on("balloon-show", () => {
+      console.log('消息框显示了')
+    });
+    tray.on("balloon-click", () => {
+      console.log('消息框点击了')
+    });
+    //只有等窗口自然消失时，才会触发此事件
+    tray.on("balloon-closed", () => {
+      console.log('消息框关闭了')
     });
 
     //显示主窗口
@@ -115,6 +120,14 @@ function createWindow() {
   ipc.on("login", function () {
     mainWindow.maximize();
   });
+
+  //托盘消息，弹出一个气泡
+  ipc.on("trayInfo", (event, arg) => {
+    console.log(arg);
+    tray.displayBalloon({ title: "请重试", content: "请重新启动导航台尝试",ico:path.join(__dirname, "/public/icon.png")});
+    // tray.displayBalloon(JSON.parse(arg));
+  });
+
   //通过主进程中转的窗口间的数据
   ipc.on("paradata", (event, arg) => {
     mainWindow.webContents.send("paradata", arg);

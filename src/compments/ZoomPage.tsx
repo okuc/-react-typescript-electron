@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { remote, webFrame } from "electron";
+import { remote, webFrame,ipcRenderer,Tray, autoUpdater} from "electron";
 
 const ZoomPage = () => {
   //webFrame是当前browserWindowr实例，可以对当前页面进行放大缩小、插入文本、css、获取页面的框架结构等操作
@@ -30,8 +30,15 @@ const ZoomPage = () => {
     remote.getCurrentWindow().setProgressBar(0.3); //设置进度条为30%
   };
 
+  let tray:Tray;
+  //设置托盘气泡
+  const setTrayBalloon = () => {
+    ipcRenderer.send("trayInfo",{'title':'title',content:'this is content.'});
+
+  };
   const [screen, setScreen] = useState({ width: 0, height: 0 }); //保存屏幕的长和宽
   const [cursor, setCursor] = useState({ x: 0, y: 0 }); //保存鼠标位置
+  const [imgSrc, setImg] = useState(""); //保存鼠标位置
 
   return (
     <div>
@@ -41,6 +48,7 @@ const ZoomPage = () => {
       <button onClick={maxScreen}>窗口占满整个屏幕</button>
       <button onClick={getInfo}>获取屏幕分辨率及鼠标位置</button>
       <button onClick={setProcessBarInfo}>设置进度条</button>
+      <button onClick={setTrayBalloon}>托盘弹出气泡消息</button>
       <div>
         屏幕分辨率：{screen.width}--{screen.height}
       </div>
