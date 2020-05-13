@@ -20,3 +20,9 @@
  - `npm install antd --save`
  - `npm install react-app-rewired customize-cra`，对reate-react-app 的默认配置进行自定义
  - `npm install babel-plugin-import`，babel-plugin-import 是一个用于按需加载组件代码和样式的 babel 插件
+
+ # 数据存储
+ - 前端存储
+     - 键值存储(key-value)
+         - localStorage、IndexedDB
+         - PouchDB:客户端库    

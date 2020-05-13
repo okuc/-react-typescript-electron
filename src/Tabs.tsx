@@ -9,6 +9,7 @@ import PreImg from "./compments/PreImg";
 import Camera from "./compments/Camera";
 import os from "os";
 import  MyTerminal from './compments/MyTerminal';
+import  Storage from './compments/Storage';
 const { TabPane } = Tabs;
 
 function callback(key: any) {
@@ -39,6 +40,9 @@ function MyTabs() {
         </TabPane>
         <TabPane tab="模拟终端" key="7">
           <MyTerminal></MyTerminal>
+        </TabPane>
+        <TabPane tab="存储" key="8">
+          <Storage></Storage>
         </TabPane>
       </Tabs>
     </div>
