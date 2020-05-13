@@ -8,7 +8,7 @@ import ZoomPage from "./compments/ZoomPage";
 import PreImg from "./compments/PreImg";
 import Camera from "./compments/Camera";
 import os from "os";
-
+import  MyTerminal from './compments/MyTerminal';
 const { TabPane } = Tabs;
 
 function callback(key: any) {
@@ -36,6 +36,9 @@ function MyTabs() {
         </TabPane>
         <TabPane tab="摄像头" key="6">
           <Camera></Camera>
+        </TabPane>
+        <TabPane tab="模拟终端" key="7">
+          <MyTerminal></MyTerminal>
         </TabPane>
       </Tabs>
     </div>
