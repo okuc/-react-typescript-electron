@@ -16,6 +16,18 @@
         - `npm run build-electron`
         - `npm run build-electron-green`
 
+# 
+    1. 安装`npm install -g electron-packager`
+    2. 简单打包`electron-packager . --electron-version=8.2.5`//点是要打包的目录
+    2. 简单打包`electron-packager . --executable-name=newName --electron-version=8.2.5 `//指定打包的目录
+    2. 简单打包`electron-packager . --icon=xxx.ico --electron-version=8.2.5 `//指定打包的目录
+    2. 简单打包`electron-packager . me --asar --electron-version=8.2.5 `//执行后，app.asar文件会替代app目录,`asar extract app.asar xyz`可以解压asar
+    6. `electron-packager-interactive`向导式打包工具
+## 资源处理的几中方法
+    - 少什么拷什么，直接找到打包后的资源目录拷过去。拷到其他目录，也可以手动修改引用的路径。
+    - 将资源目录拷贝到当前目录下。和初始路径一个目录
+    - 尽可能使用Web资源(https/http)
+
 # 引入antd
  - `npm install antd --save`
  - `npm install react-app-rewired customize-cra`，对reate-react-app 的默认配置进行自定义
@@ -26,3 +38,4 @@
      - 键值存储(key-value)
          - localStorage、IndexedDB
          - PouchDB:客户端库    
+ - 安装sqlite的js版本：`npm install sql.js `,由于未能找到针对typescript的声明文件，所以最终使用`npm install sqlite3 @types/sqlite3 --save`

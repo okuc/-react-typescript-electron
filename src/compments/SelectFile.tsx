@@ -1,7 +1,7 @@
 import React from "react";
 import { remote } from "electron";
 import fs from "fs";
-import path from 'path';
+import path from "path";
 interface Props {}
 
 interface State {
@@ -54,7 +54,7 @@ export default class SelectFile extends React.Component<Props, State> {
       title: "请选择 .txt 文件",
       defaultPath: "D:\\Personal\\Desktop",
       properties: ["openDirectory"],
-     // properties: ["openFile","multiSelections"],//多选，可以同时选择文件和目录
+      // properties: ["openFile","multiSelections"],//多选，可以同时选择文件和目录
       //buttonLabel:"请选择",选择窗口按钮的名称
     });
 
@@ -75,7 +75,7 @@ export default class SelectFile extends React.Component<Props, State> {
     const result = await remote.dialog.showOpenDialog({
       title: "请选择目录及文件",
       defaultPath: "D:\\Personal\\Desktop",
-      properties: ["openFile","multiSelections"],//多选，可以同时选择文件和目录
+      properties: ["openFile", "multiSelections"], //多选，可以同时选择文件和目录
       //buttonLabel:"请选择",选择窗口按钮的名称
       filters: [
         {
@@ -92,14 +92,14 @@ export default class SelectFile extends React.Component<Props, State> {
     this.setState(() => ({ directoryName: result.filePaths }));
   };
 
-    /**
+  /**
    * 保存对话框
    */
   public saveFile = async () => {
     const result = await remote.dialog.showSaveDialog({
       title: "保存文件",
       defaultPath: "D:\\Personal\\Desktop",
-      nameFieldLabel:"保存位置",
+      nameFieldLabel: "保存位置",
       //buttonLabel:"请选择",选择窗口按钮的名称
       filters: [
         {
@@ -116,27 +116,36 @@ export default class SelectFile extends React.Component<Props, State> {
         },
       ],
     });
-    
-    this.setState(() => ({ txtFileData: result.filePath===undefined?'':result.filePath }));
+
+    this.setState(() => ({
+      txtFileData: result.filePath === undefined ? "" : result.filePath,
+    }));
   };
 
-   /**
+  /**
    * 其他对话框
    */
   public otherDialog = async () => {
-    const img = remote.nativeImage.createFromPath(path.relative('.', path.join(path.resolve("public"),"icon.png")));
-    console.log(path.relative('.', path.join(__dirname, 'public', 'icon.png')));
+    let img = remote.nativeImage.createFromPath(
+      path.relative(".", path.join(path.resolve("public"), "icon.png"))
+    );
+    if (process.env.NODE_ENV === "development") {
+      img = remote.nativeImage.createFromPath("./public/icon.ico");
+    } else {
+      img = remote.nativeImage.createFromPath(
+        path.join(__dirname, "/build/icon.ico")
+      );
+    }
     console.log("================================打包后图像的问题暂未解决");
-    console.log(path.resolve("public"),"icon.png");
     const result = await remote.dialog.showMessageBox({
       title: "信息",
-      message:"这是信息内容，有多种类型的对话框，更改类型即可。",
-      type:"warning",//info、error、question、warning、none
-      //icon:img,//windows下原本有默认图标，更改后须将不同类型的图标改为不同的，否则将一样，不易区分
-      buttons:['button1','button1','button1','button1','button1']
+      message: "这是信息内容，有多种类型的对话框，更改类型即可。",
+      type: "warning", //info、error、question、warning、none
+      icon: img, //windows下原本有默认图标，更改后须将不同类型的图标改为不同的，否则将一样，不易区分
+      buttons: ["button1", "button1", "button1", "button1", "button1"],
     });
-    
-    this.setState(() => ({ txtFileData: "选择的按钮是:"+result.response }));
+
+    this.setState(() => ({ txtFileData: "选择的按钮是:" + result.response }));
   };
   public render = (): JSX.Element => {
     return (

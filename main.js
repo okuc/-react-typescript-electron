@@ -21,7 +21,6 @@ function createWindow() {
   const windowOptions = {
     width: 800,
     height: 600,
-    icon: "./public/icon.ico",
     frame: true, //是否有标题、菜单
     title: "好好学习，天天向上",
     //fullscreen:true,//是否全屏
@@ -29,7 +28,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       //preload: path.join(__dirname, "preload.js"),
-      webSecurity: false,//关闭安全设置，方便上传显示本地图片
+      webSecurity: false, //关闭安全设置，方便上传显示本地图片
     },
     show: false, //默认不显示
   };
@@ -67,12 +66,23 @@ function createWindow() {
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
       : path.join(__dirname, "/build/index.html");
+
   mainWindow.loadURL(startUrl);
+
+  let icon;
+  //开发环境下
+  if (process.env.NODE_ENV === "development") {
+    mainWindow.setIcon("./public/icon.ico");
+    icon = "./public/icon.png";
+  } else {
+    mainWindow.setIcon(path.join(__dirname, "/build/icon.ico"));
+    icon = path.join(__dirname, "/build/icon.png");
+  }
 
   //内容加载完毕，显示窗口
   mainWindow.on("ready-to-show", () => {
     //添加托盘图标，一个应用可创建多个托盘图标，按下面的方法不停的添加即可,不要使用ico图标，ico图标会导致不弹出
-    tray = new Tray(path.join(__dirname, "/public/icon.png"));
+    tray = new Tray(icon);
 
     //为托盘图标添加上下文菜单
     const contextMenu = Menu.buildFromTemplate([
@@ -89,14 +99,14 @@ function createWindow() {
     tray.setContextMenu(contextMenu);
     tray.setToolTip("这是一个托盘应用");
     tray.on("balloon-show", () => {
-      console.log('消息框显示了')
+      console.log("消息框显示了");
     });
     tray.on("balloon-click", () => {
-      console.log('消息框点击了')
+      console.log("消息框点击了");
     });
     //只有等窗口自然消失时，才会触发此事件
     tray.on("balloon-closed", () => {
-      console.log('消息框关闭了')
+      console.log("消息框关闭了");
     });
 
     //显示主窗口
@@ -125,7 +135,19 @@ function createWindow() {
   //托盘消息，弹出一个气泡
   ipc.on("trayInfo", (event, arg) => {
     console.log(arg);
-    tray.displayBalloon({ title: "请重试", content: "请重新启动导航台尝试",ico:path.join(__dirname, "/public/icon.png")});
+    if (process.env.NODE_ENV === "development") {
+      tray.displayBalloon({
+        title: "请重试",
+        content: "请重新启动导航台尝试",
+        ico: path.join(__dirname, "/public/icon.png"),
+      });
+    } else {
+      tray.displayBalloon({
+        title: "请重试",
+        content: "请重新启动导航台尝试",
+        ico: path.join(__dirname, "/build/icon.png"),
+      });
+    }
     // tray.displayBalloon(JSON.parse(arg));
   });
 

@@ -21,12 +21,32 @@ function App() {
   });
 
   const openWindow = () => {
+
+        //开发环境下
+
+    //设置窗口菜单https://www.electronjs.org/docs/api/menu-item#menuitemmenu
+    let img = remote.nativeImage.createFromPath(
+      path.relative(".", path.join(path.resolve("public"), "icon.png"))
+    );
+    
+    if (process.env.NODE_ENV === "development") {
+      img = remote.nativeImage.createFromPath("./public/icon.ico");
+    } else {
+      img = remote.nativeImage.createFromPath(
+        path.join(__dirname, "/build/icon.ico")
+      );
+     }
+
+
+
     //添加子窗口，不添加parent参数则为两个并列的窗口，没有父子关系
     const win = new remote.BrowserWindow({
       parent: remote.getCurrentWindow(),
       width: 400,
       height: 275,
+      icon:img,
       modal: true, //设定为模式窗口，父窗口不可再用。
+      frame: false, //是否有标题、菜单
       webPreferences: {
         nodeIntegration: true,
         //preload: path.join(__dirname, "preload.js"),
@@ -34,21 +54,21 @@ function App() {
     });
 
     win.on("close", function () {});
-    console.log(path.relative('.', path.join(path.resolve("public"),"icon.png")));
-    //设置窗口菜单https://www.electronjs.org/docs/api/menu-item#menuitemmenu
+
     const template: Electron.MenuItemConstructorOptions[] = [
       {
         label: "文件",
         submenu: [
           {
             label: "关于",
-            icon:remote.nativeImage.createFromPath(path.relative('.', path.join(path.resolve("public"),"icon.png"))),
+            icon: img,
             click: () => {
               var aboutWin = new remote.BrowserWindow({
                 width: 300,
                 height: 200,
                 parent: win,
                 modal: true,
+                frame: false, //是否有标题、菜单
               });
               aboutWin.loadURL("http://www.baidu.com");
             },
@@ -132,13 +152,14 @@ function App() {
     ];
 
     const menu = remote.Menu.buildFromTemplate(template);
-    win.setMenu(menu);//仅仅在此窗口有效，不影响其他窗口
+    win.setMenu(menu); //仅仅在此窗口有效，不影响其他窗口
     //remote.Menu.setApplicationMenu(menu);//这种设置方式会使应用的所有窗口都改动
     //加载页面
     const startUrl =
       process.env.NODE_ENV === "development"
         ? "http://localhost:3000/child.html"
         : path.join(__dirname, "/build/child.html");
+    console.log(startUrl);
     win.loadURL(startUrl);
 
     win.webContents.on("did-finish-load", () => {
