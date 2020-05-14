@@ -10,6 +10,7 @@ import Camera from "./compments/Camera";
 import os from "os";
 import  MyTerminal from './compments/MyTerminal';
 import  Storage from './compments/Storage';
+import MyIndexedDB from './compments/MyIndexedDB'
 const { TabPane } = Tabs;
 
 function callback(key: any) {
@@ -43,6 +44,9 @@ function MyTabs() {
         </TabPane>
         <TabPane tab="存储" key="8">
           <Storage></Storage>
+        </TabPane>
+        <TabPane tab="indexedDB" key="9">
+          <MyIndexedDB></MyIndexedDB>
         </TabPane>
       </Tabs>
     </div>
