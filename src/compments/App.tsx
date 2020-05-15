@@ -4,6 +4,7 @@ import "./App.css";
 import { Input, Select } from "antd";
 import path from "path";
 import { ipcRenderer, remote, BrowserWindow } from "electron";
+import pathHelper,{urlNoFile} from "./PathHelper";
 function App() {
   const [msg, setMsg] = useState<string | null>("123");
   const [childWin, setChildWin] = useState<Window | null>(null); //将子窗口引入放入状态中，防止刷新页面时丢失引用
@@ -21,32 +22,25 @@ function App() {
   });
 
   const openWindow = () => {
-
-        //开发环境下
+    //开发环境下
 
     //设置窗口菜单https://www.electronjs.org/docs/api/menu-item#menuitemmenu
-    let img = remote.nativeImage.createFromPath(
-      path.relative(".", path.join(path.resolve("public"), "icon.png"))
-    );
-    
+    let img = path.join(urlNoFile, "icon.png");
+
     if (process.env.NODE_ENV === "development") {
-      img = remote.nativeImage.createFromPath("./public/icon.ico");
+      img = "./public/icon.png";
     } else {
-      img = remote.nativeImage.createFromPath(
-        path.join(__dirname, "/build/icon.ico")
-      );
-     }
-
-
+      img = path.join(urlNoFile, "icon.png");
+    }
 
     //添加子窗口，不添加parent参数则为两个并列的窗口，没有父子关系
     const win = new remote.BrowserWindow({
       parent: remote.getCurrentWindow(),
       width: 400,
       height: 275,
-      icon:img,
+      icon: img,
       modal: true, //设定为模式窗口，父窗口不可再用。
-      frame: false, //是否有标题、菜单
+      frame: true, //是否有标题、菜单
       webPreferences: {
         nodeIntegration: true,
         //preload: path.join(__dirname, "preload.js"),
@@ -54,14 +48,13 @@ function App() {
     });
 
     win.on("close", function () {});
-
     const template: Electron.MenuItemConstructorOptions[] = [
       {
         label: "文件",
         submenu: [
           {
             label: "关于",
-            icon: img,
+            icon: remote.nativeImage.createFromPath(img),//不支持file开头的路径
             click: () => {
               var aboutWin = new remote.BrowserWindow({
                 width: 300,
@@ -158,7 +151,7 @@ function App() {
     const startUrl =
       process.env.NODE_ENV === "development"
         ? "http://localhost:3000/child.html"
-        : path.join(__dirname, "/build/child.html");
+        : path.join(pathHelper, "/child.html");
     console.log(startUrl);
     win.loadURL(startUrl);
 
@@ -177,7 +170,7 @@ function App() {
     const startUrl =
       process.env.NODE_ENV === "development"
         ? "http://localhost:3000/child2.html"
-        : path.join(__dirname, "/build/child2.html");
+        : path.join(pathHelper, "/child2.html");
     childWinTemp = window.open(startUrl, "title", "width=300,height=200"); //也可以直接是网址。
     if (childWin?.onload) {
       //这里使用了类型保护机制，只有为Window类型时才执行，为null时不执行

@@ -2,6 +2,7 @@ import React from "react";
 import { remote } from "electron";
 import fs from "fs";
 import path from "path";
+import {urlNoFile} from "./PathHelper";
 interface Props {}
 
 interface State {
@@ -127,16 +128,16 @@ export default class SelectFile extends React.Component<Props, State> {
    */
   public otherDialog = async () => {
     let img = remote.nativeImage.createFromPath(
-      path.relative(".", path.join(path.resolve("public"), "icon.png"))
+      path.relative(".", path.join(urlNoFile, "icon.png"))
     );
     if (process.env.NODE_ENV === "development") {
       img = remote.nativeImage.createFromPath("./public/icon.ico");
     } else {
       img = remote.nativeImage.createFromPath(
-        path.join(__dirname, "/build/icon.ico")
+        path.join(urlNoFile, "icon.ico")
       );
     }
-    console.log("================================打包后图像的问题暂未解决");
+    
     const result = await remote.dialog.showMessageBox({
       title: "信息",
       message: "这是信息内容，有多种类型的对话框，更改类型即可。",
