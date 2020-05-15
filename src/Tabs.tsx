@@ -11,6 +11,7 @@ import os from "os";
 import  MyTerminal from './compments/MyTerminal';
 import  Storage from './compments/Storage';
 import MyIndexedDB from './compments/MyIndexedDB'
+import ElectronPackerUI from './compments/ElectronPackerUI'
 const { TabPane } = Tabs;
 
 function callback(key: any) {
@@ -47,6 +48,9 @@ function MyTabs() {
         </TabPane>
         <TabPane tab="indexedDB" key="9">
           <MyIndexedDB></MyIndexedDB>
+        </TabPane>
+        <TabPane tab="打包应用" key="10">
+          <ElectronPackerUI/>
         </TabPane>
       </Tabs>
     </div>
