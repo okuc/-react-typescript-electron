@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "main": "main.js",
+  "author": "okuc",
+  "description": "test app",
   "homepage": "./",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -38,7 +40,9 @@
   "build": {
     "appId": "com.okuc.test",
     "productName": "react-typescript-electron",
+    "asar": false,
     "extends": null,
+    "copyright":"okuc 版权所有", 
     "directories": {
       "output": "build-electron"
     },
