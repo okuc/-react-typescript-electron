@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import MyTabs from './Tabs'
+import Frame from './Frame'
 ReactDOM.render(
   <React.Fragment>
-    <MyTabs></MyTabs>
+    <Frame></Frame>
   </React.Fragment>,
   document.getElementById('root')
 );
