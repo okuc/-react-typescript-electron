@@ -31,9 +31,9 @@
     "build-electron-green": "electron-builder --dir"
   },
   "build": {
-    "appId": "com.okuc.test",
-    "productName": "word比较查重工具",
-    "copyright":"sdhetian",
+    "appId": "com.xxx.test",
+    "productName": "标书比较查重器",
+    "copyright":"xxx",
     "extends": null,
     "directories": {
       "output": "build-electron"
@@ -73,7 +73,7 @@
   "devDependencies": {
     "cross-env": "^7.0.2",
     "devtron": "^1.4.0",
-    "electron": "^8.2.5",
+    "electron": "^9.0.5",
     "electron-builder": "^22.6.0",
     "react-app-rewired": "^2.1.6"
   }
